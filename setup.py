@@ -8,7 +8,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'kubic = kubic.kubic:main',
+            'kubic = kubic.kubic:run',
         ]
     }
 )
