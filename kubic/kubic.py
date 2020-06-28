@@ -1,4 +1,4 @@
-from repl import KubicRepl
+from kubic.repl import KubicRepl
 
 
 def run():

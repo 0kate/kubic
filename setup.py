@@ -10,5 +10,6 @@ setup(
         'console_scripts': [
             'kubic = kubic.kubic:run',
         ]
-    }
+    },
+    install_requires=open('requirements.txt').read().splitlines(),
 )
