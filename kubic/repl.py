@@ -1,6 +1,10 @@
 import sys
 
+import yaml
 from prompt_toolkit import prompt
+
+from kubic.executor import KubicExecutor
+from kubic.translator import KubicTranslator
 
 
 class KubicRepl(object):
@@ -19,13 +23,19 @@ class KubicRepl(object):
     '''
 
     def __init__(self):
-        pass
+        self.executor = KubicExecutor()
+        self.current_context = self._get_current_context()
 
     def run(self):
         print(self.__class__.LABEL)
 
         while True:
-            command = prompt('(kubic)\n>> ')
+            command = prompt(f'Context: [{self.current_context}]\n>> ')
             if command == 'exit':
                 sys.exit(0)
             print(command)
+
+    def _get_current_context(self):
+        kubectl_config = yaml.load(self.executor.get_kubectl_config(), Loader=yaml.FullLoader)
+        return kubectl_config['current-context']
+
