@@ -11,3 +11,6 @@ pyyaml = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+tests = "python -m unittest discover tests"
