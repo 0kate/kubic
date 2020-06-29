@@ -8,7 +8,7 @@ from kubic.runnable import KubicRunnable
 class KubicExecutor(KubicRunnable):
     KUBECTL = 'kubectl'
 
-    def run(self, option: KubicCommand) -> Text:
+    def run(self, command: KubicCommand) -> Text:
         return ''
 
     def get_kubectl_config(self): 
