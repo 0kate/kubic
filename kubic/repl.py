@@ -3,11 +3,13 @@ import sys
 import yaml
 from prompt_toolkit import prompt
 
+from kubic.config import KubicConfig
 from kubic.executor import KubicExecutor
+from kubic.runnable import KubicRunnable
 from kubic.translator import KubicTranslator
 
 
-class KubicRepl(object):
+class KubicRepl(KubicRunnable):
     LABEL = '''
          ___           ___                                     ___     
         /__/|         /__/\         _____        ___          /  /\    
@@ -26,7 +28,7 @@ class KubicRepl(object):
         self.executor = KubicExecutor()
         self.current_context = self._get_current_context()
 
-    def run(self):
+    def run(self, option: KubicConfig) -> None:
         print(self.__class__.LABEL)
 
         while True:
