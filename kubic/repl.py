@@ -28,7 +28,7 @@ class KubicRepl(KubicRunnable):
         self.executor = KubicExecutor()
         self.current_context = self._get_current_context()
 
-    def run(self, option: KubicConfig) -> None:
+    def run(self, config: KubicConfig) -> None:
         print(self.__class__.LABEL)
 
         while True:
