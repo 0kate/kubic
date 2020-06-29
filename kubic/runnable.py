@@ -2,10 +2,10 @@ from abc import ABCMeta, abstractmethod
 from typing import Generic, Option, Text, TypeVar
 
 
-T = TypeVar('T')
+I, O = TypeVar('I'), TypeVar('O')
 
 
 class KubicRunnable(metaclass=ABCMeta):
     @abstractmethod
-    def run(self, option: Genercit[T]) -> Option[Text]:
+    def run(self, option: Genercit[I]) -> Option[O]:
         pass
