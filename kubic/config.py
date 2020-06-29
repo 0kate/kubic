@@ -1,0 +1,2 @@
+class KubicConfig(object):
+    pass
