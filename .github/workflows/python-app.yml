@@ -6,8 +6,8 @@ name: Python application
 on:
  push:
   branches: [ master ]
- pull_request:
-  branches: [ master ]
+# pull_request:
+#  branches: [ master ]
 
 jobs:
   build:
@@ -34,6 +34,8 @@ jobs:
   #  - name: Test with pytest
   #    run: |
   #      pytest
+   - name: Install pipenv
+     run: pip install pipenv
    - name: Install dependencies
      run: pipenv install
    - name: Test with unittest
