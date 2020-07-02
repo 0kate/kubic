@@ -9,3 +9,7 @@ class KubicCommand(object):
     def __str__(self) -> Text:
         options_chained_by_space = ' '.join(self.options)
         return f'{self.command} {options_chained_by_space}'
+
+    @property
+    def with_options(self) -> List[Text]:
+        return [self.command] + list(self.options)
