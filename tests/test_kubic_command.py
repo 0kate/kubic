@@ -9,3 +9,6 @@ class TestKubicCommand(TestCase):
 
     def test_str(self):
         self.assertEqual(str(self.command), 'get pod')
+
+    def test_get_property_of_with_options(self):
+        self.assertEqual(self.command.with_options, ['get', 'pod'])
