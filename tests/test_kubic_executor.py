@@ -6,7 +6,7 @@ from kubic.executor import KubicExecutor
 
 
 class TestKubicExecutor(TestCase):
-    TEST_DATA = KubicCommand()
+    TEST_DATA = KubicCommand('get', 'pod')
 
     def setUp(self):
         executor = KubicExecutor()
