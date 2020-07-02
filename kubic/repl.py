@@ -1,8 +1,9 @@
 import sys
+from typing import Text
 
-import yaml
 from prompt_toolkit import prompt
 
+from kubic.command import KubicCommand
 from kubic.config import KubicConfig
 from kubic.executor import KubicExecutor
 from kubic.runnable import KubicRunnable
@@ -26,18 +27,18 @@ class KubicRepl(KubicRunnable):
 
     def __init__(self):
         self.executor = KubicExecutor()
-        self.current_context = self._get_current_context()
 
     def run(self, config: KubicConfig) -> None:
         print(self.__class__.LABEL)
 
         while True:
-            command = prompt(f'Context: [{self.current_context}]\n>> ')
+            current_context = self._get_current_context()
+            command = prompt(f'Context: [{current_context}]\n>> ')
             if command == 'exit':
                 sys.exit(0)
             print(command)
 
-    def _get_current_context(self):
-        kubectl_config = yaml.load(self.executor.get_kubectl_config(), Loader=yaml.FullLoader)
-        return kubectl_config['current-context']
-
+    def _get_current_context(self) -> Text:
+        get_current_context_command = \
+            KubicCommand('config', 'current-context')
+        return self.executor.run(get_current_context_command)
