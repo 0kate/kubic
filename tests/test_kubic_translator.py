@@ -13,3 +13,10 @@ class TestKubicTranslator(TestCase):
 
     def test_run_and_return_kubic_command(self):
         self.assertIsInstance(self.translator_returned, KubicCommand)
+
+    def test_run_and_return_right_kubic_command(self):
+        expeted = {
+            'command': 'get',
+            'options': ('pod',),
+        }
+        self.assertEqual(self.translator_returned.__dict__, expeted)

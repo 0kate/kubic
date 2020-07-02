@@ -6,5 +6,6 @@ from kubic.runnable import KubicRunnable
 
 class KubicTranslator(KubicRunnable):
     def run(self, option: Text) -> KubicCommand:
-        command = KubicCommand('')
+        _, command, options = option.split(' ')
+        command = KubicCommand(command, options)
         return command
