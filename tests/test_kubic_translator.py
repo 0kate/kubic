@@ -5,7 +5,7 @@ from kubic.translator import KubicTranslator
 
 
 class TestKubicTranslator(TestCase):
-    TEST_DATA = 'kubectl get pod'
+    TEST_DATA = 'get pod'
 
     def setUp(self):
         translator = KubicTranslator()
@@ -17,6 +17,6 @@ class TestKubicTranslator(TestCase):
     def test_run_and_return_right_kubic_command(self):
         expeted = {
             'command': 'get',
-            'options': ('pod',),
+            'options': ['pod'],
         }
         self.assertEqual(self.translator_returned.__dict__, expeted)
