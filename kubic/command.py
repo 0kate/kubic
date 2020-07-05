@@ -2,7 +2,7 @@ from typing import List, Text
 
 
 class KubicCommand(object):
-    def __init__(self, command: Text, *options: List[Text]):
+    def __init__(self, command: Text, options: List[Text] = []):
         self.command = command
         self.options = options
 
@@ -12,4 +12,4 @@ class KubicCommand(object):
 
     @property
     def with_options(self) -> List[Text]:
-        return [self.command] + list(self.options)
+        return [self.command] + self.options
