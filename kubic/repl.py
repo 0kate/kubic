@@ -38,7 +38,10 @@ class KubicRepl(KubicRunnable):
                 sys.exit(0)
             print(command)
 
+    def _dispatch(self, command: KubicCommand) -> Text:
+        return self.executor.run(command)
+
     def _get_current_context(self) -> Text:
         get_current_context_command = \
             KubicCommand('config', 'current-context')
-        return self.executor.run(get_current_context_command)
+        return self._dispatch(get_current_context_command)
