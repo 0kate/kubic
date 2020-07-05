@@ -11,9 +11,8 @@ class KubicExecutor(KubicRunnable):
     def run(self, command: KubicCommand) -> Text:
         kubectl_with_options = [self.__class__.KUBECTL]
         kubectl_with_options.extend(command.with_options)
-        output = subprocess.check_output(kubectl_with_options).decode('utf-8')
+        output = self._call_subprocess(kubectl_with_options)
         return output.strip()
 
-    def get_kubectl_config(self):
-        config = subprocess.check_output([self.__class__.KUBECTL, 'config', 'view'])
-        return config
+    def _call_subprocess(self, commands) -> Text:
+        return subprocess.check_output(commands).decode('utf-8')
