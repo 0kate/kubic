@@ -6,7 +6,7 @@ from kubic.runnable import KubicRunnable
 
 
 class KubicExecutor(KubicRunnable):
-    KUBECTL = 'kubectl'
+    KUBECTL = "kubectl"
 
     def run(self, command: KubicCommand) -> Text:
         kubectl_with_options = [self.__class__.KUBECTL]
@@ -15,4 +15,4 @@ class KubicExecutor(KubicRunnable):
         return output
 
     def _call_subprocess(self, commands) -> Text:
-        return subprocess.check_output(commands).decode('utf-8').strip()
+        return subprocess.check_output(commands).decode("utf-8").strip()
