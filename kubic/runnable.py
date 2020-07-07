@@ -1,8 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from typing import Generic, Text, TypeVar
 
-
-I, O = TypeVar('I'), TypeVar('O')
+I, O = TypeVar("I"), TypeVar("O")
 
 
 class KubicRunnable(metaclass=ABCMeta):

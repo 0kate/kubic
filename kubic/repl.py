@@ -11,7 +11,7 @@ from kubic.translator import KubicTranslator
 
 
 class KubicRepl(KubicRunnable):
-    LABEL = '''
+    LABEL = """
          ___           ___                                     ___     
         /__/|         /__/\         _____        ___          /  /\    
        |  |:|         \  \:\       /  /::\      /  /\        /  /:/    
@@ -23,7 +23,7 @@ class KubicRepl(KubicRunnable):
       \  \:\        \  \:\/:/     \  \:\/:/       /__/:/    \  \:\/:/  
        \  \:\        \  \::/       \  \::/        \__\/      \  \::/   
         \__\/         \__\/         \__\/                     \__\/    
-    '''
+    """
 
     def __init__(self):
         self.executor = KubicExecutor()
@@ -34,12 +34,12 @@ class KubicRepl(KubicRunnable):
 
         while True:
             current_context = self._get_current_context()
-            user_input = prompt(f'Context: [{current_context}]\n>> ')
-            if user_input in ('exit', 'quit'):
+            user_input = prompt(f"Context: [{current_context}]\n>> ")
+            if user_input in ("exit", "quit"):
                 sys.exit(0)
             command = self._translate(user_input)
             output = self._dispatch(command)
-            print(f'{output}\n')
+            print(f"{output}\n")
 
     def _dispatch(self, command: KubicCommand) -> Text:
         return self.executor.run(command)
@@ -48,5 +48,5 @@ class KubicRepl(KubicRunnable):
         return self.translator.run(user_input)
 
     def _get_current_context(self) -> Text:
-        get_current_context_command = self._translate('config current-context')
+        get_current_context_command = self._translate("config current-context")
         return self._dispatch(get_current_context_command)

@@ -6,4 +6,4 @@ from kubic.executor import KubicExecutor
 
 
 class TestKubicExecutor(TestCase):
-    TEST_DATA = KubicCommand('get', 'pod')
+    TEST_DATA = KubicCommand("get", "pod")
