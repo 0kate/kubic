@@ -6,13 +6,26 @@ from kubic.runnable import KubicRunnable
 
 
 class KubicExecutor(KubicRunnable):
+    """KubicExecutor."""
+
     KUBECTL = "kubectl"
 
     def run(self, command: KubicCommand) -> Text:
+        """run.
+
+        :param command:
+        :type command: KubicCommand
+        :rtype: Text
+        """
         kubectl_with_options = [self.__class__.KUBECTL]
         kubectl_with_options.extend(command.with_options)
         output = self._call_subprocess(kubectl_with_options)
         return output
 
     def _call_subprocess(self, commands) -> Text:
+        """_call_subprocess.
+
+        :param commands:
+        :rtype: Text
+        """
         return subprocess.check_output(commands).decode("utf-8").strip()

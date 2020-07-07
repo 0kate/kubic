@@ -3,6 +3,7 @@ from kubic.repl import KubicRepl
 
 
 def run():
+    """run."""
     repl = KubicRepl()
     config = KubicConfig()
 
