@@ -16,7 +16,7 @@ from kubic.utils import is_command_exists
 class KubicRepl(KubicRunnable):
     """KubicRepl."""
 
-    LABEL = """
+    LABEL = """kubic (kubectl interactive console)
          ___           ___                                     ___     
         /__/|         /__/\         _____        ___          /  /\    
        |  |:|         \  \:\       /  /::\      /  /\        /  /:/    
