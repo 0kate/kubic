@@ -1,3 +1,4 @@
+import shutil
 import sys
 from typing import Text
 
@@ -5,6 +6,7 @@ from prompt_toolkit import prompt
 
 from kubic.command import KubicCommand
 from kubic.config import KubicConfig
+from kubic.errors import KubectlNotInstalledError
 from kubic.executor import KubicExecutor
 from kubic.runnable import KubicRunnable
 from kubic.translator import KubicTranslator
@@ -39,6 +41,9 @@ class KubicRepl(KubicRunnable):
         :type config: KubicConfig
         :rtype: None
         """
+        if shutil.which("kubectl") is None:
+            raise KubectlNotInstalledError()
+
         print(self.__class__.LABEL)
 
         while True:

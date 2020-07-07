@@ -1,4 +1,7 @@
+import sys
+
 from kubic.config import KubicConfig
+from kubic.errors import KubectlNotInstalledError
 from kubic.repl import KubicRepl
 
 
@@ -7,4 +10,8 @@ def run():
     repl = KubicRepl()
     config = KubicConfig()
 
-    repl.run(config)
+    try:
+        repl.run(config)
+    except KubectlNotInstalledError:
+        print("Error: kubectl is not installed.")
+        sys.exit(0)
