@@ -6,10 +6,11 @@ from prompt_toolkit import prompt
 
 from kubic.command import KubicCommand
 from kubic.config import KubicConfig
-from kubic.errors import KubectlNotInstalledError
+from kubic.errors import CommandNotFoundError, KubectlNotInstalledError
 from kubic.executor import KubicExecutor
 from kubic.runnable import KubicRunnable
 from kubic.translator import KubicTranslator
+from kubic.utils import is_command_exists
 
 
 class KubicRepl(KubicRunnable):
@@ -41,7 +42,7 @@ class KubicRepl(KubicRunnable):
         :type config: KubicConfig
         :rtype: None
         """
-        if shutil.which("kubectl") is None:
+        if not is_command_exists("kubectl"):
             raise KubectlNotInstalledError()
 
         print(self.__class__.LABEL)
@@ -51,8 +52,14 @@ class KubicRepl(KubicRunnable):
             user_input = prompt(f"Context: [{current_context}]\n>> ")
             if user_input in ("exit", "quit"):
                 sys.exit(0)
+
             command = self._translate(user_input)
-            output = self._dispatch(command)
+            try:
+                output = self._dispatch(command)
+            except CommandNotFoundError:
+                print(f"Command {user_input} is not found.\n")
+                continue
+
             print(f"{output}\n")
 
     def _dispatch(self, command: KubicCommand) -> Text:
