@@ -3,6 +3,7 @@ from typing import Text
 
 from kubic.command import KubicCommand
 from kubic.errors import CommandNotFoundError
+from kubic.output import KubicOutput
 from kubic.runnable import KubicRunnable
 from kubic.utils import is_command_exists
 
@@ -12,12 +13,12 @@ class KubicExecutor(KubicRunnable):
 
     KUBECTL = "kubectl"
 
-    def run(self, command: KubicCommand) -> Text:
+    def run(self, command: KubicCommand) -> KubicOutput:
         """run.
 
         :param command:
         :type command: KubicCommand
-        :rtype: Text
+        :rtype: KubicOutput
         """
         kubectl_with_options = [self.__class__.KUBECTL]
         kubectl_with_options.extend(command.with_options)
@@ -33,14 +34,16 @@ class KubicExecutor(KubicRunnable):
                 raise CommandNotFoundError()
         return output
 
-    def _call_subprocess(self, commands) -> Text:
+    def _call_subprocess(self, commands) -> KubicOutput:
         """_call_subprocess.
 
         :param commands:
-        :rtype: Text
+        :rtype: KubicOutput
         """
-        return (
+        output = KubicOutput()
+        output.text = (
             subprocess.check_output(commands, stderr=subprocess.STDOUT)
             .decode("utf-8")
             .strip()
         )
+        return output
