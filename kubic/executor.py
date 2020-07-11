@@ -32,6 +32,8 @@ class KubicExecutor(KubicRunnable):
                     raise CommandNotFoundError()
             else:
                 raise CommandNotFoundError()
+
+        output.kind = command.command
         return output
 
     def _call_subprocess(self, commands) -> KubicOutput:
