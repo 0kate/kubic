@@ -1,3 +1,9 @@
+colorama==0.4.3
+commonmark==0.9.1
+pprintpp==0.4.0
 prompt-toolkit==3.0.5
+pygments==2.6.1
 pyyaml==5.3.1
+rich==3.2.0
+typing-extensions==3.7.4.2
 wcwidth==0.2.5
