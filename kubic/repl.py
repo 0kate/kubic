@@ -61,9 +61,40 @@ class KubicRepl(KubicRunnable):
                 print(f"Command {user_input} is not found.\n")
                 continue
 
-            print(f"{output.text}\n")
+            self._print(output)
 
-    def _dispatch(self, command: KubicCommand) -> Text:
+    def _print(self, output: KubicOutput):
+        """_print.
+
+        :param output:
+        :type output: KubicOutput
+        """
+        print_method_name = f"_print_{output.kind}_output"
+
+        if hasattr(self, print_method_name):
+            print_method = getattr(self, print_method_name)
+        else:
+            print_method = getattr(self, "_print_other_output")
+
+        print_method(output)
+
+    def _print_get_output(self, output: KubicOutput):
+        """_print_get_output.
+
+        :param output:
+        :type output: KubicOutput
+        """
+        print(f"{output.text}\n")
+
+    def _print_other_output(self, output: KubicOutput):
+        """_print_other_output.
+
+        :param output:
+        :type output: KubicOutput
+        """
+        print(f"{output.text}\n")
+
+    def _dispatch(self, command: KubicCommand) -> KubicOutput:
         """_dispatch.
 
         :param command:
