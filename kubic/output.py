@@ -1,4 +1,6 @@
 class KubicOutput(object):
     """KubicOutput."""
 
-    pass
+    def __init__(self):
+        """__init__."""
+        text = ""
