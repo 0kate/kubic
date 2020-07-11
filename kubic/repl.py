@@ -8,6 +8,7 @@ from kubic.command import KubicCommand
 from kubic.config import KubicConfig
 from kubic.errors import CommandNotFoundError, KubectlNotInstalledError
 from kubic.executor import KubicExecutor
+from kubic.output import KubicOutput
 from kubic.runnable import KubicRunnable
 from kubic.translator import KubicTranslator
 from kubic.utils import is_command_exists
@@ -60,7 +61,7 @@ class KubicRepl(KubicRunnable):
                 print(f"Command {user_input} is not found.\n")
                 continue
 
-            print(f"{output}\n")
+            print(f"{output.text}\n")
 
     def _dispatch(self, command: KubicCommand) -> Text:
         """_dispatch.
