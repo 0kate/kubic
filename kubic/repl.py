@@ -51,6 +51,10 @@ class KubicRepl(KubicRunnable):
         while True:
             current_context = self._get_current_context()
             user_input = prompt(f"Context: [{current_context}]\n>> ")
+
+            if not user_input:
+                continue
+
             if user_input in ("exit", "quit"):
                 sys.exit(0)
 
