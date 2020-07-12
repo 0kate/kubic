@@ -1,3 +1,7 @@
+import rich
+from rich import table as rich_table
+
+
 class KubicOutput(object):
     """KubicOutput."""
 
@@ -14,7 +18,19 @@ class KubicOutput(object):
 
     def _print_get_output(self):
         """_print_get_output."""
-        print(f"{self.text}\n")
+        # print(f"{self.text}\n")
+        table = rich_table.Table(show_header=True, header_style="bold magenta")
+
+        header, *items = self.text.split("\n")
+
+        for col in header.split():
+            table.add_column(col)
+
+        for item in items:
+            row = item.split()
+            table.add_row(*row)
+
+        rich.print(table)
 
     def _print_other_output(self):
         """_print_other_output."""
