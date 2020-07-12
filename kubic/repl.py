@@ -61,9 +61,9 @@ class KubicRepl(KubicRunnable):
                 print(f"Command {user_input} is not found.\n")
                 continue
 
-            print(f"{output.text}\n")
+            output.print()
 
-    def _dispatch(self, command: KubicCommand) -> Text:
+    def _dispatch(self, command: KubicCommand) -> KubicOutput:
         """_dispatch.
 
         :param command:
@@ -87,4 +87,5 @@ class KubicRepl(KubicRunnable):
         :rtype: Text
         """
         get_current_context_command = self._translate("config current-context")
-        return self._dispatch(get_current_context_command)
+        output = self._dispatch(get_current_context_command)
+        return output.text
