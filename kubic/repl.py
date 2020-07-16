@@ -37,8 +37,6 @@ class KubicRepl(KubicRunnable):
         """__init__."""
         self.executor = KubicExecutor()
         self.translator = KubicTranslator()
-        # for translator use to determine if the resource name
-        self.translator.resources_set = self._get_resources_set()
 
     def run(self, config: KubicConfig) -> None:
         """run.
@@ -49,6 +47,9 @@ class KubicRepl(KubicRunnable):
         """
         if not is_command_exists("kubectl"):
             raise KubectlNotInstalledError()
+
+        # for translator use to determine if the resource name
+        self.translator.resources_set = self._get_resources_set()
 
         print(self.__class__.LABEL)
 
