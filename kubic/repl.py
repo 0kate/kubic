@@ -13,7 +13,7 @@ from kubic.executor import KubicExecutor
 from kubic.output import KubicOutput
 from kubic.runnable import KubicRunnable
 from kubic.translator import KubicTranslator
-from kubic.utils import is_command_exists
+from kubic.utils import is_command_exists, parse_table_kubectl_returned
 
 
 class KubicRepl(KubicRunnable):
@@ -37,6 +37,8 @@ class KubicRepl(KubicRunnable):
         """__init__."""
         self.executor = KubicExecutor()
         self.translator = KubicTranslator()
+        # for translator use to determine if the resource name
+        self.translator.resources_set = self._get_resources_set()
 
     def run(self, config: KubicConfig) -> None:
         """run.
@@ -128,6 +130,31 @@ class KubicRepl(KubicRunnable):
         :rtype: KubicCommand
         """
         return self.translator.run(user_input)
+
+    def _get_resources_set(self) -> set:
+        """_get_resources_set.
+
+        :rtype: set
+        """
+        get_api_resources_command = self._translate("api-resources")
+        api_resources_text = self._dispatch(get_api_resources_command).text
+        header_row, *api_resource_rows = api_resources_text.split("\n")
+
+        header, api_resources = parse_table_kubectl_returned(
+            header_row, api_resource_rows
+        )
+
+        api_resources_set = set()
+        for api_resource in api_resources:
+            api_resource_dict = dict(zip(header, api_resource))
+
+            api_resources_set.add(api_resource_dict["NAME"])
+            api_resources_set.add(api_resource_dict["KIND"].lower())
+            short_names = api_resource_dict["SHORTNAMES"]
+            if short_names:
+                api_resources_set.add(short_names)
+
+        return api_resources_set
 
     def _get_current_context(self) -> Text:
         """_get_current_context.
