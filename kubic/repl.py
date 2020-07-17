@@ -2,8 +2,8 @@ import shutil
 import sys
 from typing import Text
 
-import rich
 from prompt_toolkit import prompt
+from rich import console as rich_console
 from rich import table as rich_table
 
 from kubic.command import KubicCommand
@@ -35,6 +35,7 @@ class KubicRepl(KubicRunnable):
 
     def __init__(self):
         """__init__."""
+        self.console = rich_console.Console()
         self.executor = KubicExecutor()
         self.translator = KubicTranslator()
 
@@ -93,18 +94,29 @@ class KubicRepl(KubicRunnable):
         :param output:
         :type output: KubicOutput
         """
-        table = rich_table.Table(show_header=True, header_style="bold magenta")
+        RESOURCE_NOT_FOUND_KEYWORD = "No resources"
 
-        header_row, *item_rows = output.text.split("\n")
-        header, items = parse_table_kubectl_returned(header_row, item_rows)
+        if output.text.startswith(RESOURCE_NOT_FOUND_KEYWORD):
+            output_contents = output.text
+            kwargs = {
+                "style": "bold red",
+            }
+        else:
+            table = rich_table.Table(show_header=True, header_style="bold magenta")
 
-        for col in header:
-            table.add_column(col)
+            header_row, *item_rows = output.text.split("\n")
+            header, items = parse_table_kubectl_returned(header_row, item_rows)
 
-        for item in items:
-            table.add_row(*item)
+            for col in header:
+                table.add_column(col)
 
-        rich.print(table)
+            for item in items:
+                table.add_row(*item)
+
+            output_contents = table
+            kwargs = {}
+
+        self.console.print(output_contents, **kwargs)
 
     def _print_other_output(self, output: KubicOutput):
         """_print_other_output.
