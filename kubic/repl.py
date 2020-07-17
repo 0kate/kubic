@@ -95,14 +95,14 @@ class KubicRepl(KubicRunnable):
         """
         table = rich_table.Table(show_header=True, header_style="bold magenta")
 
-        header, *items = output.text.split("\n")
+        header_row, *item_rows = output.text.split("\n")
+        header, items = parse_table_kubectl_returned(header_row, item_rows)
 
-        for col in header.split():
+        for col in header:
             table.add_column(col)
 
         for item in items:
-            row = item.split()
-            table.add_row(*row)
+            table.add_row(*item)
 
         rich.print(table)
 
