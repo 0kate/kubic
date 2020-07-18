@@ -4,6 +4,7 @@ from typing import Text
 
 from prompt_toolkit import prompt
 from rich import console as rich_console
+from rich import syntax as rich_syntax
 from rich import table as rich_table
 
 from kubic.command import KubicCommand
@@ -117,6 +118,15 @@ class KubicRepl(KubicRunnable):
             kwargs = {}
 
         self.console.print(output_contents, **kwargs)
+
+    def _print_describe_output(self, output: KubicOutput):
+        """_print_describe_output.
+
+        :param output:
+        :type output: KubicOutput
+        """
+        syntax = rich_syntax.Syntax(output.text, "yaml", line_numbers=True)
+        self.console.print(syntax)
 
     def _print_other_output(self, output: KubicOutput):
         """_print_other_output.
