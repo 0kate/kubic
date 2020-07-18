@@ -72,69 +72,8 @@ class KubicRepl(KubicRunnable):
                 print(f"Command {user_input} is not found.\n")
                 continue
 
-            self._print(output)
-
-    def _print(self, output: KubicOutput):
-        """_print.
-
-        :param output:
-        :type output: KubicOutput
-        """
-        print_method_name = f"_print_{output.kind}_output"
-
-        if hasattr(self, print_method_name):
-            print_method = getattr(self, print_method_name)
-        else:
-            print_method = getattr(self, "_print_other_output")
-
-        print_method(output)
-
-    def _print_get_output(self, output: KubicOutput):
-        """_print_get_output.
-
-        :param output:
-        :type output: KubicOutput
-        """
-        RESOURCE_NOT_FOUND_KEYWORD = "No resources"
-
-        if output.text.startswith(RESOURCE_NOT_FOUND_KEYWORD):
-            output_contents = output.text
-            kwargs = {
-                "style": "bold red",
-            }
-        else:
-            table = rich_table.Table(show_header=True, header_style="bold magenta")
-
-            header_row, *item_rows = output.text.split("\n")
-            header, items = parse_table_kubectl_returned(header_row, item_rows)
-
-            for col in header:
-                table.add_column(col)
-
-            for item in items:
-                table.add_row(*item)
-
-            output_contents = table
-            kwargs = {}
-
-        self.console.print(output_contents, **kwargs)
-
-    def _print_describe_output(self, output: KubicOutput):
-        """_print_describe_output.
-
-        :param output:
-        :type output: KubicOutput
-        """
-        syntax = rich_syntax.Syntax(output.text, "yaml", line_numbers=True)
-        self.console.print(syntax)
-
-    def _print_other_output(self, output: KubicOutput):
-        """_print_other_output.
-
-        :param output:
-        :type output: KubicOutput
-        """
-        print(f"{output.text}\n")
+            styled_output, options = output.styling()
+            self.console.print(styled_output, **options)
 
     def _dispatch(self, command: KubicCommand) -> KubicOutput:
         """_dispatch.
@@ -160,7 +99,7 @@ class KubicRepl(KubicRunnable):
         :rtype: set
         """
         get_api_resources_command = self._translate("api-resources")
-        api_resources_text = self._dispatch(get_api_resources_command).text
+        api_resources_text, _ = self._dispatch(get_api_resources_command).styling()
         header_row, *api_resource_rows = api_resources_text.split("\n")
 
         header, api_resources = parse_table_kubectl_returned(
@@ -185,4 +124,5 @@ class KubicRepl(KubicRunnable):
         :rtype: Text
         """
         get_current_context_command = self._translate("config current-context")
-        return self._dispatch(get_current_context_command).text
+        current_context, _ = self._dispatch(get_current_context_command).styling()
+        return current_context
