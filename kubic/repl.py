@@ -2,7 +2,9 @@ import shutil
 import sys
 from typing import Text
 
-from prompt_toolkit import prompt
+from prompt_toolkit import PromptSession
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.history import InMemoryHistory
 from rich import console as rich_console
 from rich import syntax as rich_syntax
 from rich import table as rich_table
@@ -38,6 +40,7 @@ class KubicRepl(KubicRunnable):
         """__init__."""
         self.console = rich_console.Console()
         self.executor = KubicExecutor()
+        self.session = PromptSession()
         self.translator = KubicTranslator()
 
     def run(self, config: KubicConfig) -> None:
@@ -57,7 +60,10 @@ class KubicRepl(KubicRunnable):
 
         while True:
             current_context = self._get_current_context()
-            user_input = prompt(f"Context: [{current_context}]\n>> ")
+            user_input = self.session.prompt(
+                f"Context: [{current_context}]\n>> ",
+                auto_suggest=AutoSuggestFromHistory(),
+            )
 
             if not user_input:
                 continue
